@@ -16,7 +16,7 @@ namespace cSharpWeek1wc2
             second.AddChoice("Canada",true);
             second.AddChoice("United States",false);
 
-            presentQuestion(second);
+            PresentQuestion(second);
             Console.ReadKey(true);
         }
 
