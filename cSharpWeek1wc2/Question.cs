@@ -20,12 +20,12 @@ namespace cSharpWeek1wc2
 
         public Boolean CheckAnswer(String response)
         {
-            return response.Equals(Answer);
+            return response.Equals(Answer, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public virtual void Display()
         {
-            Console.WriteLine(Text);
+            Console.WriteLine(Text +"?" );
         }
     }
 }
