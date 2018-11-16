@@ -58,6 +58,7 @@ namespace cSharpWeek1wc2
                 Text = "Wat is de standaardwaarde van float datatype?",
                 Category = "Datatype",
                 Moeilijkheidsgraad = 3
+
             };
 
             firstCSharp.AddChoice("0.0", true);
@@ -135,12 +136,12 @@ namespace cSharpWeek1wc2
         {
             Console.WriteLine("Kies de category: \n" +
                 "Java \n" +
-                "C# \n");
+                "Datatype \n");
             String response = Console.ReadLine();
 
             // bron: https://stackoverflow.com/questions/6371150/comparing-two-strings-ignoring-case-in-c-sharp 
             while (!response.Equals("java", StringComparison.InvariantCultureIgnoreCase) 
-                && !response.Equals("c#", StringComparison.InvariantCultureIgnoreCase))
+                && !response.Equals("datatype", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.WriteLine("Kies alstublieft alleen bovenstaande category. ");
                 response = Console.ReadLine();
