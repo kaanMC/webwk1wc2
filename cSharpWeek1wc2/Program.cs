@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace cSharpWeek1wc2
 {
@@ -6,31 +8,88 @@ namespace cSharpWeek1wc2
     {
         static void Main(string[] args)
         {
-            Question first = new Question()
+            Question firstJava = new Question()
             {
                 Text = "Who was the inventor of Java?",
-                Answer = "James Gosling"
+                Answer = "James Gosling",
+                Category = "Java",
+                Moeilijkheidsgraad = 3
             };
 
-            ChoiceQuestion second = new ChoiceQuestion()
+            ChoiceQuestion secondJava = new ChoiceQuestion()
             {
-                Text = "In which country was the inventor of Java born?"
+                Text = "In which country was the inventor of Java born?",
+                Category = "Java",
+                Moeilijkheidsgraad = 2
             };
 
-            second.AddChoice("Australia", false);
-            second.AddChoice("Denmark", false);
-            second.AddChoice("Canada", true);
-            second.AddChoice("United States", false);
+            secondJava.AddChoice("Australia", false);
+            secondJava.AddChoice("Denmark", false);
+            secondJava.AddChoice("Canada", true);
+            secondJava.AddChoice("United States", false);
 
-            ChoiceQuestion third = new ChoiceQuestion()
+
+            ChoiceQuestion thirdJava = new ChoiceQuestion()
             {
-                Text = "Wat is de standaardwaarde van integer datatype?"
+                Text = "Who is James Gosling",
+                Category = "Java",
+                Moeilijkheidsgraad = 1
             };
-            third.AddChoice("1", false);
-            third.AddChoice("0",true);
-            third.AddChoice("null",false);
+
+            thirdJava.AddChoice("The inventor of Java", true);
+            thirdJava.AddChoice("The inventor of C#", false);
+            thirdJava.AddChoice("The inventor of C++", false);
+            thirdJava.AddChoice("The inventor of HTML", false);
+
+            
+            ChoiceQuestion secondCSharp = new ChoiceQuestion()
+            {
+                Text = "Wat is de standaardwaarde van string datatype?",
+                Category = "Datatype",
+                Moeilijkheidsgraad = 1
+            };
+
+            secondCSharp.AddChoice("1", false);
+            secondCSharp.AddChoice("0",false);
+            secondCSharp.AddChoice("null",true);
+
+            ChoiceQuestion firstCSharp = new ChoiceQuestion()
+            {
+                Text = "Wat is de standaardwaarde van float datatype?",
+                Category = "Datatype",
+                Moeilijkheidsgraad = 3
+            };
+
+            firstCSharp.AddChoice("0.0", true);
+            firstCSharp.AddChoice("0", false);
+            firstCSharp.AddChoice("null", false);
+
+            ChoiceQuestion thirdCSharp = new ChoiceQuestion()
+            {
+                Text = "Wat is de standaardwaarde van integer datatype?",
+                Category = "Datatype",
+                Moeilijkheidsgraad = 3
+            };
+
+            thirdCSharp.AddChoice("1", false);
+            thirdCSharp.AddChoice("0", true);
+            thirdCSharp.AddChoice("null", false);
+
+            int moeilijkheidsgraadGekozen = Convert.ToInt32(getMoeilijkheidsgraad());
+            string categoryGekozen = getCategory();
+
+            List<Question> questionJava = new List<Question>() { firstJava,secondJava, thirdJava};
+            List<Question> questionCSharp = new List<Question>() { secondCSharp,firstCSharp,thirdCSharp};
+
+            var questionJ = questionJava.OrderBy(qj => qj.Moeilijkheidsgraad).ToList();
+            var questionC = questionCSharp.OrderBy(qc => qc.Moeilijkheidsgraad).ToList();
+            
+            /*
             PresentQuestion(first);
             PresentQuestion(second);
+            PresentQuestion(thirdJava);
+            */
+
             Console.ReadKey(true);
         }
 
@@ -41,5 +100,27 @@ namespace cSharpWeek1wc2
             String response = Console.ReadLine();
             Console.WriteLine(q.CheckAnswer(response));
          }
-}
+
+        public static string getMoeilijkheidsgraad()
+        {
+            Console.WriteLine("Kies de moelijkheidsgraadniveau: \n" +
+                "1 \n" +
+                "2 \n" +
+                "3 \n");
+            String response = Console.ReadLine();
+            Console.WriteLine("U hebt moeilijkheidsgraadniveau: " + response + "gekozen");
+            return response;
+        }
+
+        public static string getCategory()
+        {
+            Console.WriteLine("Kies de category: \n" +
+                "Java \n" +
+                "C# \n");
+            String response = Console.ReadLine();
+            Console.WriteLine("U hebt category: " + response + "gekozen");
+            return response;
+        }
+    }
+        
 }

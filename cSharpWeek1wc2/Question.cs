@@ -9,6 +9,8 @@ namespace cSharpWeek1wc2
     {
         public String Text { get; set; }
         public String Answer { get; set; }
+        public String Category { get; set; }
+        public int Moeilijkheidsgraad { get; set; }
 
         public Question(String text= "", String answer = "")
         {
