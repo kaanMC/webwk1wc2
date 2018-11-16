@@ -81,16 +81,19 @@ namespace cSharpWeek1wc2
             List<Question> questionJava = new List<Question>() { firstJava,secondJava, thirdJava};
             List<Question> questionCSharp = new List<Question>() { secondCSharp,firstCSharp,thirdCSharp};
 
+            //LINQ
             var questionJ = questionJava.OrderBy(qj => qj.Moeilijkheidsgraad).ToList();
             var questionC = questionCSharp.OrderBy(qc => qc.Moeilijkheidsgraad).ToList();
 
-            //bron https://stackoverflow.com/questions/1528171/joining-two-lists-together
+            //bron: https://stackoverflow.com/questions/1528171/joining-two-lists-together
             var allQuestion = questionC.Concat(questionJ);
 
             List<Question> SelectedQuestion = (from q in allQuestion
                                          where q.Category.Equals(categoryGekozen)
                                          select q).ToList();
-            //
+
+            //bron: https://stackoverflow.com/questions/6015081/c-sharp-linq-how-to-retrieve-a-single-result
+
             Question result = (from q in SelectedQuestion
                                where q.Moeilijkheidsgraad == moeilijkheidsgraadGekozen
                               select q ).Single();
@@ -119,7 +122,12 @@ namespace cSharpWeek1wc2
                 "2 \n" +
                 "3 \n");
             String response = Console.ReadLine();
-            Console.WriteLine("U hebt moeilijkheidsgraadniveau: " + response + "gekozen.\n");
+           while(Convert.ToInt32(response) > 3 || Convert.ToInt32(response) < 1)
+            {
+                Console.WriteLine("Kies alstublieft alleen bovenstaande moeilijkheidsgraad. ");
+                response = Console.ReadLine();
+            }
+            Console.WriteLine("U hebt moeilijkheidsgraadniveau: " + response + " gekozen.\n");
             return response;
         }
 
@@ -129,8 +137,28 @@ namespace cSharpWeek1wc2
                 "Java \n" +
                 "C# \n");
             String response = Console.ReadLine();
-            Console.WriteLine("U hebt category: " + response + "gekozen.\n");
-            return response;
+
+            // bron: https://stackoverflow.com/questions/6371150/comparing-two-strings-ignoring-case-in-c-sharp 
+            while (!response.Equals("java", StringComparison.InvariantCultureIgnoreCase) 
+                && !response.Equals("c#", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Console.WriteLine("Kies alstublieft alleen bovenstaande category. ");
+                response = Console.ReadLine();
+            }
+            Console.WriteLine("U hebt category: " + response + " gekozen.\n");
+
+            return UppercaseFirst(response);
+        }
+        //bron: https://www.dotnetperls.com/uppercase-first-letter
+        public static string UppercaseFirst(string s)
+        {
+            // Check for empty string.
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+            // Return char and concat substring.
+            return char.ToUpper(s[0]) + s.Substring(1);
         }
     }
         
