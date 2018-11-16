@@ -20,7 +20,7 @@ namespace cSharpWeek1wc2
             Console.ReadKey(true);
         }
 
-        public static void presentQuestion(Question q)
+        public static void PresentQuestion(Question q)
          {
             q.Display();
             Console.WriteLine("Your answer: ");
