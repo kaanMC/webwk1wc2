@@ -6,16 +6,30 @@ namespace cSharpWeek1wc2
     {
         static void Main(string[] args)
         {
+            Question first = new Question()
+            {
+                Text = "Who was the inventor of Java?",
+                Answer = "James Gosling"
+            };
+
             ChoiceQuestion second = new ChoiceQuestion()
             {
                 Text = "In which country was the inventor of Java born?"
             };
 
-            second.AddChoice("Australia",false);
-            second.AddChoice("Denmark",false);
-            second.AddChoice("Canada",true);
-            second.AddChoice("United States",false);
+            second.AddChoice("Australia", false);
+            second.AddChoice("Denmark", false);
+            second.AddChoice("Canada", true);
+            second.AddChoice("United States", false);
 
+            ChoiceQuestion third = new ChoiceQuestion()
+            {
+                Text = "Wat is de standaardwaarde van integer datatype?"
+            };
+            third.AddChoice("1", false);
+            third.AddChoice("0",true);
+            third.AddChoice("null",false);
+            PresentQuestion(first);
             PresentQuestion(second);
             Console.ReadKey(true);
         }
