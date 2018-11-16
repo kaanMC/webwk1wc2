@@ -68,7 +68,7 @@ namespace cSharpWeek1wc2
             {
                 Text = "Wat is de standaardwaarde van integer datatype?",
                 Category = "Datatype",
-                Moeilijkheidsgraad = 3
+                Moeilijkheidsgraad = 2
             };
 
             thirdCSharp.AddChoice("1", false);
@@ -83,10 +83,21 @@ namespace cSharpWeek1wc2
 
             var questionJ = questionJava.OrderBy(qj => qj.Moeilijkheidsgraad).ToList();
             var questionC = questionCSharp.OrderBy(qc => qc.Moeilijkheidsgraad).ToList();
+
+            //bron https://stackoverflow.com/questions/1528171/joining-two-lists-together
+            var allQuestion = questionC.Concat(questionJ);
+
+            List<Question> SelectedQuestion = (from q in allQuestion
+                                         where q.Category.Equals(categoryGekozen)
+                                         select q).ToList();
+            //
+            Question result = (from q in SelectedQuestion
+                               where q.Moeilijkheidsgraad == moeilijkheidsgraadGekozen
+                              select q ).Single();
+
             
-            /*
-            PresentQuestion(first);
-            PresentQuestion(second);
+            PresentQuestion(result);
+           /* PresentQuestion(second);
             PresentQuestion(thirdJava);
             */
 
@@ -108,7 +119,7 @@ namespace cSharpWeek1wc2
                 "2 \n" +
                 "3 \n");
             String response = Console.ReadLine();
-            Console.WriteLine("U hebt moeilijkheidsgraadniveau: " + response + "gekozen");
+            Console.WriteLine("U hebt moeilijkheidsgraadniveau: " + response + "gekozen.\n");
             return response;
         }
 
@@ -118,7 +129,7 @@ namespace cSharpWeek1wc2
                 "Java \n" +
                 "C# \n");
             String response = Console.ReadLine();
-            Console.WriteLine("U hebt category: " + response + "gekozen");
+            Console.WriteLine("U hebt category: " + response + "gekozen.\n");
             return response;
         }
     }
