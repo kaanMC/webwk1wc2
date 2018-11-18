@@ -21,6 +21,7 @@ namespace cSharpWeek1wc2
 
         public override void Display()
         {
+            base.Display();
             String choice = "";
             foreach(string c in Choices)
             {
@@ -30,4 +31,4 @@ namespace cSharpWeek1wc2
             Console.WriteLine(Text + "\n\n" + choice);
         }
     }
-}
+} 

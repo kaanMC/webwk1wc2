@@ -75,35 +75,24 @@ namespace cSharpWeek1wc2
             thirdCSharp.AddChoice("1", false);
             thirdCSharp.AddChoice("0", true);
             thirdCSharp.AddChoice("null", false);
-
-            int moeilijkheidsgraadGekozen = Convert.ToInt32(getMoeilijkheidsgraad());
-            string categoryGekozen = getCategory();
-
-            List<Question> questionJava = new List<Question>() { firstJava,secondJava, thirdJava};
-            List<Question> questionCSharp = new List<Question>() { secondCSharp,firstCSharp,thirdCSharp};
-
-            //LINQ
-            var questionJ = questionJava.OrderBy(qj => qj.Moeilijkheidsgraad).ToList();
-            var questionC = questionCSharp.OrderBy(qc => qc.Moeilijkheidsgraad).ToList();
-
-            //bron: https://stackoverflow.com/questions/1528171/joining-two-lists-together
-            var allQuestion = questionC.Concat(questionJ);
+            IList<Question> allQuestion = new List<Question>() { firstJava, secondJava, thirdJava, secondCSharp, firstCSharp, thirdCSharp };
+            var allQuestionSorted = allQuestion.OrderBy(qj => qj.Moeilijkheidsgraad).ToList();
+        
+            int moeilijkheidsgraadGekozen = Convert.ToInt32(UserMoeilijkheidsgraad(allQuestionSorted));
+            string categoryGekozen = UserCategory(allQuestionSorted);
+            
 
             List<Question> SelectedQuestion = (from q in allQuestion
                                          where q.Category.Equals(categoryGekozen)
                                          select q).ToList();
 
             //bron: https://stackoverflow.com/questions/6015081/c-sharp-linq-how-to-retrieve-a-single-result
-
             Question result = (from q in SelectedQuestion
                                where q.Moeilijkheidsgraad == moeilijkheidsgraadGekozen
                               select q ).Single();
 
             
             PresentQuestion(result);
-           /* PresentQuestion(second);
-            PresentQuestion(thirdJava);
-            */
 
             Console.ReadKey(true);
         }
@@ -116,40 +105,52 @@ namespace cSharpWeek1wc2
             Console.WriteLine(q.CheckAnswer(response));
          }
 
-        public static string getMoeilijkheidsgraad()
+        public static string UserMoeilijkheidsgraad(IList<Question> allQuestion)
         {
-            Console.WriteLine("Kies de moelijkheidsgraadniveau: \n" +
-                "1 \n" +
-                "2 \n" +
-                "3 \n");
+            var mLijst = allQuestion.GroupBy(q => q.Moeilijkheidsgraad)
+                   .Select(q => q.First())
+                   .ToList();
+
+            Console.WriteLine("Kies de moelijkheidsgraadniveau: \n");
+            foreach (Question m in mLijst) Console.WriteLine(m.Moeilijkheidsgraad + "\n");
+
+            int lowest = mLijst.Min(m => m.Moeilijkheidsgraad);
+            int highest = mLijst.Max(m => m.Moeilijkheidsgraad);
             String response = Console.ReadLine();
-           while(Convert.ToInt32(response) > 3 || Convert.ToInt32(response) < 1)
+
+            while(Convert.ToInt32(response) > highest || Convert.ToInt32(response) < lowest)
             {
                 Console.WriteLine("Kies alstublieft alleen bovenstaande moeilijkheidsgraad. ");
                 response = Console.ReadLine();
             }
+
             Console.WriteLine("U hebt moeilijkheidsgraadniveau: " + response + " gekozen.\n");
             return response;
         }
 
-        public static string getCategory()
+        public static string UserCategory(IList<Question> allQuestion)
         {
-            Console.WriteLine("Kies de category: \n" +
-                "Java \n" +
-                "Datatype \n");
-            String response = Console.ReadLine();
+            List<Question> categoryLijst = allQuestion.GroupBy(q => q.Category)
+                   .Select(q => q.First())
+                   .ToList();
 
-            // bron: https://stackoverflow.com/questions/6371150/comparing-two-strings-ignoring-case-in-c-sharp 
-            while (!response.Equals("java", StringComparison.InvariantCultureIgnoreCase) 
-                && !response.Equals("datatype", StringComparison.InvariantCultureIgnoreCase))
+            Console.WriteLine("Kies de category: \n ");
+            foreach (Question c in categoryLijst) Console.WriteLine(c.Category + "\n");
+
+            String response = Console.ReadLine();
+            IList<String> categories = categoryLijst.Select(c => c.Category).ToList();
+
+            //bron: https://stackoverflow.com/questions/3947126/case-insensitive-list-search
+            while (!categories.Contains(response, StringComparer.OrdinalIgnoreCase))
             {
                 Console.WriteLine("Kies alstublieft alleen bovenstaande category. ");
                 response = Console.ReadLine();
             }
-            Console.WriteLine("U hebt category: " + response + " gekozen.\n");
 
+            Console.WriteLine("U hebt category: " + response + " gekozen.\n");
             return UppercaseFirst(response);
         }
+
         //bron: https://www.dotnetperls.com/uppercase-first-letter
         public static string UppercaseFirst(string s)
         {
