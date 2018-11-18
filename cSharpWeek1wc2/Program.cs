@@ -75,35 +75,53 @@ namespace cSharpWeek1wc2
             thirdCSharp.AddChoice("1", false);
             thirdCSharp.AddChoice("0", true);
             thirdCSharp.AddChoice("null", false);
+
+
+
             IList<Question> allQuestion = new List<Question>() { firstJava, secondJava, thirdJava, secondCSharp, firstCSharp, thirdCSharp };
             var allQuestionSorted = allQuestion.OrderBy(qj => qj.Moeilijkheidsgraad).ToList();
-        
-            int moeilijkheidsgraadGekozen = Convert.ToInt32(UserMoeilijkheidsgraad(allQuestionSorted));
-            string categoryGekozen = UserCategory(allQuestionSorted);
-            
 
-            List<Question> SelectedQuestion = (from q in allQuestion
-                                         where q.Category.Equals(categoryGekozen)
+            
+            Console.WriteLine("Welkom! QuizTime!! \n Kies: Category (1) of Moeilijkheidsgraad (2) \n Toets 1 of 2 in.");
+            int response = int.Parse(Console.ReadLine());
+            int? moeilijkheidsgraadGekozen = null;
+            string categoryGekozen = null;
+
+            if (response == 1) moeilijkheidsgraadGekozen = Convert.ToInt32(UserMoeilijkheidsgraad(allQuestionSorted));
+            else categoryGekozen = UserCategory(allQuestionSorted);
+
+            List<Question> displayQuestion = new List<Question>();
+
+            if (categoryGekozen != null)
+            {
+                displayQuestion = (from q in allQuestion
+                                   where q.Category.Equals(categoryGekozen)
+                                   select q).ToList();
+            }
+            else
+            {
+                //bron: https://stackoverflow.com/questions/6015081/c-sharp-linq-how-to-retrieve-a-single-result
+                displayQuestion = (from q in allQuestionSorted
+                                         where q.Moeilijkheidsgraad == moeilijkheidsgraadGekozen
                                          select q).ToList();
-
-            //bron: https://stackoverflow.com/questions/6015081/c-sharp-linq-how-to-retrieve-a-single-result
-            Question result = (from q in SelectedQuestion
-                               where q.Moeilijkheidsgraad == moeilijkheidsgraadGekozen
-                              select q ).Single();
-
+            }
             
-            PresentQuestion(result);
-
+            PresentQuestion(displayQuestion);
+            Console.WriteLine("EIND");
             Console.ReadKey(true);
         }
 
-        public static void PresentQuestion(Question q)
+        public static void PresentQuestion(List<Question> Q)
          {
-            q.Display();
-            Console.WriteLine("Your answer: ");
-            String response = Console.ReadLine();
-            Console.WriteLine(q.CheckAnswer(response));
-         }
+            foreach (Question q in Q)
+            {
+                q.Display();
+                Console.WriteLine("Your answer: ");
+                String response = Console.ReadLine();
+                Console.WriteLine(q.CheckAnswer(response));
+                Console.WriteLine("\n\n");
+            }
+        }
 
         public static string UserMoeilijkheidsgraad(IList<Question> allQuestion)
         {
